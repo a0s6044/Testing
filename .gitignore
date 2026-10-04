@@ -1,0 +1,10 @@
+build/*.aux
+build/*.log
+build/*.out
+build/*.pdf
+build/*.png
+build/guard*
+build/drafts/
+*.aux
+*.out
+*.log
