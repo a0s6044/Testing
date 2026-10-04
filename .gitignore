@@ -8,3 +8,4 @@ build/drafts/
 *.aux
 *.out
 *.log
+build/*.tex
