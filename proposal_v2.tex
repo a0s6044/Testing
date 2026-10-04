@@ -1,0 +1,217 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[
+    a4paper,
+    left=1.7cm,
+    right=1.7cm,
+    top=1.8cm,
+    bottom=1.7cm
+]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Alexandros Sopasakis, 1968-04-08}
+\rhead{\small KAW Mathematics Programme 2026}
+\cfoot{\small\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{8pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\newcommand{\E}{\mathbb E}
+\newcommand{\W}{W_1}
+\newcommand{\piy}{\pi_y}
+\newcommand{\pir}{\pi_{y,r}^{b}}
+\newcommand{\epsb}{\varepsilon^{b}_{y}}
+\newcommand{\epsy}{\varepsilon_{y}}
+\newcommand{\normw}[1]{\left\|#1\right\|_w}
+% Check the six-page submission route after flushing the final page.
+\AtEndDocument{\clearpage\ifnum\value{page}>7
+  \PackageError{ProposalLength}{Proposal exceeds six pages}{Shorten the text before submission.}
+\fi}
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{4pt}%
+  \setlength{\belowdisplayskip}{4pt}%
+  \setlength{\abovedisplayshortskip}{3pt}%
+  \setlength{\belowdisplayshortskip}{3pt}%
+}
+\raggedbottom
+
+\begin{document}
+{\LARGE\bfseries When is local learning enough?\par}
+\vspace{3pt}
+{\large\bfseries Stability and spatial error bounds for conditional sampling on graphs\par}
+\vspace{4pt}
+Alexandros Sopasakis, Centre for Mathematical Sciences, Lund University
+
+A field may contain a million coordinates while the question concerns one. How much must be read, and how accurately must local laws be learned? I seek to recruit a postdoctoral mathematician from outside Sweden to answer this for conditional sampling on graphs. Separately learned local scores (gradients of conditional log-densities) may be incompatible: they need not come from one joint density. Accuracy where the data lie need not prevent a sampler from visiting regions where its drift is wrong.
+
+\section{Research environment at Lund University}
+\textbf{1.1 Host and intellectual leadership.}
+I formulated this project to connect two strands of my research: rigorous error analysis of interacting stochastic systems and the development and analysis of learned dynamical models. With Katsoulakis and Plech\'a\v{c}, I established second-order weak error estimates for coarse-grained lattice dynamics, governed by coarse-graining scale relative to interaction range \cite{KPS06}. I also independently developed lattice-free stochastic dynamics \cite{Sop12}. With my doctoral student Donglin Liu, I developed GS-SINDy, combining Earth Mover's distance and group similarity with convergence analysis \cite{LS25}; our work with Oskar \AA{}str\"om develops graph-enhanced diffusion models for spatiotemporal imputation \cite{LAS25}. The connecting question is how errors in local approximations propagate through an interacting system; here those approximations are learned and may be inconsistent.
+
+I carried out the preliminary Gaussian analysis, nonconvex numerical investigations and parameter example below. I will lead the mathematical programme, working with the fellow on boundary transfer (Theorem~A), defect estimates, certification and the synthesis of Theorems~A and~B. The fellow will lead the nonconvex defect analysis, supported by Friesen's coupling expertise and Katsoulakis's specialist input on score-based models.
+
+\textbf{1.2 Group, collaboration and supervision.}
+I am Senior Lecturer and Docent in Mathematics at Lund's Centre for Mathematical Sciences (since 2011). My supervision includes Donglin Liu (main supervisor, PhD 2025), Oskar \AA{}str\"om (main supervisor, 2023--), four further doctoral students as co-supervisor, and three postdocs as supervisor or co-supervisor, including Shuzhen Li (main supervisor, 2025--). The fellow will join this active environment for learned dynamics and graph modelling, meeting me weekly. Lund has agreed reduced teaching duties for my externally funded research.
+
+Martin Friesen, Senior Lecturer in Mathematical Statistics, has agreed to be second mentor, contributing expertise in ergodicity, concentration and interacting particle systems to the nonconvex coupling analysis. Markos A.\ Katsoulakis, Professor and Director of the Center for Applied Mathematics and Computation at UMass Amherst, has confirmed participation as co-mentor. We have eight joint papers; his recent work links score-based models to Wasserstein proximal operators \cite{ZLLKO24}. Both co-mentors will join monthly meetings. Katsoulakis will host a four-week visit in year~1 and visit Lund in year~2.
+
+As WASP Lighthouse Manager (2026--2029) and coordinator of the LTH Numerical Analysis and Lund eScience Hub seminars, I connect the fellow to wider mathematical and computational networks. LUNARC supports certification computations and COMPUTE provides a scientific-computing research school. Pablo Villanueva-Perez (Lund, ERC Starting Grant holder) has confirmed an optional MAX IV study linked to sparse X-ray reconstruction \cite{Zhang25}.
+
+\section{Project and research area}
+\textbf{2.1 Objective and precise gap.}
+For a fixed target $S$, using only its radius-$r$ neighbourhood, we seek $\W$-error of order $\varepsilon+\sqrt h+(1+r)^p e^{-\kappa r}$ plus a finite-time term. Here $\varepsilon$ measures score error under the true conditional (reference) law, $h$ is the Euler step size, and $\kappa$ is the effective spatial decay rate. We target spatially mixing finite-range fields with nonconvex one-site potentials, under explicit residual derivative control. The result should specify admissible radius, step size and run length for a desired accuracy.
+
+Dobrushin comparison \cite{Dob70,RvH14}, sparse block samplers \cite{TMM20}, Wasserstein perturbation theory \cite{RS18} and reflection coupling \cite{Eberle16,MMS20} provide starting tools. Incompatible conditionals also occur in iterative imputation \cite{LGHSK14}. Cui--Liu--Tong \cite{CLT} already bound marginal errors by target-law score discrepancies when the approximating density has suitable locality; their result compares scores of joint densities. Our learned drifts need not be scores of their sampler's invariant law. Stable localised samplers \cite{GR26} and radius--statistical-error tradeoffs for reverse diffusion \cite{GLMRT} address related questions. Xi \cite{Xi26} assumes weighted drift error along the learned process; we seek to derive such control from reference-law errors and residual regularity. Population score loss alone cannot ensure Langevin accuracy \cite{CCSW26}.
+
+\textbf{The proposed advance} is a finite-time local marginal guarantee for the implemented random-scan Euler sampler, allowing incompatible, nonconvex block drifts and an artificial boundary, uniformly in graph size. Standard comparison supplies the initial boundary estimate. The research challenge is to certify defect envelopes with feedback below the contraction margin, retaining explicit decay through both field and sampler resolvents. Useful parameter ranges and full accuracy multipliers, rather than the perturbation recursion alone, are the central targets.
+
+\textbf{2.2 Sampler, assumptions and baseline.}
+Let $X$ have a smooth, positive, finite-range Gibbs density on a bounded-degree graph with $N$ coordinates. Given $X_O=y$, write $\piy=\mathcal L(X_U\mid X_O=y)$ and partition $U$ into bounded blocks $B_i$. The target $S$ is a fixed union of blocks, also identified with their indices. Retain its radius-$r$ neighbourhood $I=I_r(S)$ in the block dependency graph and clamp other unobserved coordinates to $b$, obtaining $\pir$. Observations remain fixed. Each update chooses one of the $k_r=|I|$ blocks uniformly, freezes its local boundary $z$, and takes $n$ steps with learned drift $s_i$:
+\begin{equation}\label{eq:update}
+ Z_{\ell+1}=Z_\ell+h s_i(Z_\ell,z,y)+\sqrt{2h}\,\xi_{\ell+1},
+ \qquad \xi_\ell\sim N(0,I_{|B_i|}),\qquad \tau=nh.
+\end{equation}
+Let $\mu_T$ be the law after $T$ updates. On $S$, $\W$ uses the sum of block Euclidean distances. With $s_j^\star$ the true conditional score at the appropriate boundary, the inputs are
+\[
+ \varepsilon_{y,j}^2=\E_{\piy}\|s_j-s_j^\star\|^2,
+ \qquad \varepsilon^b_{y,j}=\E_{\pir}\|s_j-s_j^\star\|.
+\]
+These losses concern the specified $y$; unconditional training loss does not ensure accuracy for rare observations. Finite-sample generalisation is out of scope.
+
+For a nonnegative matrix $A$, set $\normw{A}=\sup_i w_i^{-1}\sum_j A_{ij}w_j$, with $0<w_-\leq w_i\leq w_+$ uniformly in $N$. Let $C$ bound blockwise $\W$ influences of the conditional specification, with $\normw{C}\leq q<1$. Assume uniform block dimensions, interaction range, local Lipschitz and linear-growth constants of true scores, and fourth moments per block under full and clamped reference laws. Also require $\sup_i\E\|\widehat X_{0,i}\|^4\leq K_0$. Bounds are uniform over the bounded observations and clamping values considered; discretisation constants may depend on $K_0$.
+
+\textbf{Baseline (months 1--4).} If learned drifts are $L$-Lipschitz and $\widetilde m$-contractive in their own block, with cross-block Lipschitz matrix $a$, synchronous comparison gives the intended estimate
+\begin{equation}\label{eq:baseline}
+ \W((\mu_T)_S,(\pir)_S)
+ \leq\frac{h}{1-\rho_h}\sum_{i\in S}\bigl[(I-A_h)^{-1}
+ (\epsb+c\sqrt h\,\mathbf1)\bigr]_i
+ +K_SM_0e^{-\gamma_h T/k_r}.
+\end{equation}
+Here $\rho_h=(1-2\widetilde mh+L^2h^2)^{1/2}<1$ for $0<h<2\widetilde m/L^2$, $A_h=ha/(1-\rho_h)$, $\normw{A_h}\leq1-\zeta$, and $\gamma_h=(1-\rho_h^n)(1-\normw{A_h})$. For a coupling with $X_0\sim\pir$, set $M_0=\max_{i\in I}w_i^{-1}\E\|\widehat X_{0,i}-X_{0,i}\|$. The $O(\sqrt h)$ term uses Lipschitz regularity and moment bounds; an $O(h)$ refinement would require stronger assumptions.
+
+Taking the learned kernel as the contractive reference in perturbation theory \cite{RS18} allows averaging defects under the exact stationary law. Exact-kernel contraction instead places defects along the learned trajectory. Nonconvexity alone excludes neither approach; Theorem~B seeks controlled feedback when direct learned-kernel contraction is unavailable or gives inferior constants.
+
+\textbf{2.3 Theorem A: spatial transfer across an artificial boundary.}
+Set $D_I=(I-C_{II})^{-1}$, $m_j^b=\E_{\piy}\|X_{B_j}-b_j\|$ for $j\notin I$, $t_I=D_I C_{I,I^c}m_{I^c}^b$ and $t_{I^c}=m_{I^c}^b$. Standard Gibbs comparison \cite{RvH14}, extending the clamped law by $b$, bounds observable discrepancies by $\sum_k\mathrm{Lip}_k(\varphi)t_k$. Applied to $\|s_j-s_j^\star\|$ with block Lipschitz constants $L_{jk}$, followed by Cauchy--Schwarz, it gives $\varepsilon^b_{y,j}\leq\varepsilon_{y,j}+\sum_kL_{jk}t_k$. Thus for the nonnegative sampling resolvent $R$ in the baseline or Theorem~B,
+\begin{equation}\label{eq:transfer}
+ \sum_{i\in S}[R\epsb]_i\leq\sum_{i\in S}[R\epsy]_i+\sum_{i\in S}[RLt]_i,
+ \qquad \W((\pir)_S,(\piy)_S)\leq\sum_{i\in S}t_i.
+\end{equation}
+\textbf{Target.} Derive exponential kernel bounds for $D_I$ and $R$ from verifiable block conditions and, for polynomial neighbourhood growth and uniformly bounded finite-range $L$, prove
+\begin{equation}\label{eq:thmA}
+ \sum_{i\in S}[RLt]_i\leq K_SM_b(1+r)^p e^{-\kappa r},\quad
+ M_b=\sup_{j\notin I}m_j^b,\quad \kappa=\min\{\kappa_D,\kappa_R\}.
+\end{equation}
+Constants and $p$ must be explicit and uniform in $N,r$. On general bounded-degree graphs, establish the corresponding weighted tail bound. Keeping the two resolvents separate distinguishes field correlation from sampler-error propagation. We will quantify decay-rate deterioration under residual feedback and identify conditions retaining the reference rate.
+
+\textbf{2.4 Theorem B: nonconvex, incompatible learned updates.}
+A drift can agree with $-u$ on $[-R_0,R_0]$ and point outward beyond $2R_0$ while its Gaussian-weighted error tends to zero. We therefore start with a confined, explicitly structured family:
+\begin{equation}\label{eq:potential}
+ V(x)=\sum_i\bigl[\alpha x_i^2/2+\eta(1-\cos x_i)\bigr]
+ -\sum_{\{i,j\}\in E}J_{ij}x_ix_j,
+ \quad \eta>\alpha>0,\quad\sup_i\sum_j|J_{ij}|<\alpha.
+\end{equation}
+Here $J$ is symmetric and finite-range. One-site potentials are nonconvex near $\pm\pi$, but tails are quadratically confined; a stronger mixing condition is also required. For scalar blocks, write $s_i(u,z)=-\alpha u+\sum_jJ_{ij}z_j+g_i(u,z)$ and $g_i^\star(u)=-\eta\sin u$. For fixed $B>\eta$, let $\mathcal G$ consist of local $C^1$ functions with $|g_i|\leq B$, $\|\partial_u(g_i-g_i^\star)\|_\infty\leq\lambda_1$ and $\|\partial_{z_j}g_i\|_\infty\leq\lambda_2$ for each neighbour. Degree factors are explicit. If $\lambda_1<\eta-\alpha$, every such drift fails global one-site Euclidean contractivity.
+Explicit residuals with own-coordinate dependence are
+\[
+ r_i(u,z)=g_i-g_i^\star=a_i+c_i\tanh u+\sum_j b_{ij}\tanh z_j,
+ \quad |a_i|+|c_i|+\sum_j|b_{ij}|\leq B-\eta,
+\]
+with $|c_i|\leq\lambda_1$ and $|b_{ij}|\leq\lambda_2$. Nonzero cross coefficients give incompatible drifts: the difference of cross derivatives is $b_{ij}\operatorname{sech}^2x_j-b_{ji}\operatorname{sech}^2x_i\not\equiv0$. We will certify examples with both own-coordinate and cross-block residual dependence.
+
+Derivative accuracy relative to the true score is a global assumption beyond population loss. Bounded architectures can enforce amplitude and cross-derivative bounds, but cannot by themselves certify that accuracy against an unknown score. The known-score family is a proof and validation model; certificates will report admissible derivative tolerances, distinguishing assumptions from training-observable quantities.
+
+\textbf{Defect mechanism.} The exact one-block diffusion $P_i$ over time $\tau$ preserves $\pir$ when the joint starting law is $\pir$. In a common metric $\mathfrak d$ satisfying $c_-|u-v|\leq\mathfrak d(u,v)\leq c_+|u-v|$, seek initial-state contraction $\theta_i\leq\theta_*<1$ and boundary influences $M_{ij}$ ($M_{ii}=0$). Couple learned and exact updates from one state, then exact updates from different states, using reflection coupling where needed. If the one-update defect obeys $b_i\leq\widetilde b_i+e_i$ and $\widetilde b_i$ has blockwise $\mathfrak d$-Lipschitz constants $\Lambda_{ij}$, coupling to the stationary reference gives
+\[
+ \E b_i(\widehat X)\leq\bar b_i+\sum_j\Lambda_{ij}d_j+c_2\sqrt h,
+ \quad \bar b_i=\E_{\pir}\widetilde b_i,\quad d_j=\E\mathfrak d(\widehat X_j,X_j).
+\]
+For the scalar family a Euclidean candidate envelope is
+\begin{equation}\label{eq:defect}
+ \widetilde b_i(x)=\int_0^\tau e^{\ell(\tau-t)}\E_x|r_i(Y_t)|\,dt,
+ \qquad \ell=\eta-\alpha+\lambda_1,
+\end{equation}
+where $Y$ is the exact block diffusion with frozen boundary. Stationarity gives $\bar b_i\leq(e^{\ell\tau}-1)\varepsilon^b_{y,i}/\ell$. Flow sensitivity should yield $\Lambda_{ii}\leq C(\tau)\lambda_1$ and $\Lambda_{ij}\leq C(\tau)(\lambda_2+\lambda_1|J_{ij}|)$, with metric factors included when using reflection distances. A constant residual has a constant envelope even when its exact defect varies with the starting point. Confinement, bounded $g_i$ and the initial fourth-moment bound will control the Euler defect uniformly over the transient and graph size.
+
+\textbf{Target.} Fix $\alpha,\eta,B$, degree and an admissible $\tau$. Prove explicit positive thresholds for $h$, $\sup_i\sum_j|J_{ij}|$, $\lambda_1,\lambda_2$ such that, uniformly over $\mathcal G$,
+\[
+ H=I-\operatorname{diag}(\theta_i),\quad F=H^{-1}(M+\Lambda),\quad
+ \normw{F}\leq1-\zeta,\qquad H^{-1}\bar b\leq c_1\epsb.
+\]
+The random-scan recursion should then imply
+\begin{equation}\label{eq:main}
+ \W((\mu_T)_S,(\pir)_S)\leq
+ c_-^{-1}\sum_{i\in S}\bigl[(I-F)^{-1}(c_1\epsb+c_2'\sqrt h\,\mathbf1)\bigr]_i
+ +K_SM_0e^{-\gamma T/k_r},
+\end{equation}
+where $M_0$ is defined in $\mathfrak d$ and
+$\gamma=\min_i\{1-\theta_i-w_i^{-1}\sum_j(M_{ij}+\Lambda_{ij})w_j\}\geq\zeta(1-\theta_*)>0$.
+Constants depend on structural bounds, $K_0$ and target size, not $N,r$. This controls target error; mixing of the learned chain needs a separate argument. We will compare certified parameter ranges, multipliers and decay rates with direct reflection coupling of the learned kernel.
+
+\textbf{Preliminary evidence.} For two Gaussian sites with scores $-x_i+cx_j$, perturb the cross coefficients to $c+\delta$ and $c-\delta$, where $0\leq c<1$ and $0<|\delta|<1-c$. Exact inner integration gives $\theta=e^{-\tau}$, off-diagonal entries $c$ in $H^{-1}M$ and $|\delta|$ in $H^{-1}\Lambda$, and stationary coupled discrepancy $d_i\leq\sqrt{2/\pi}\,\varepsilon/(1-c-|\delta|)$, with $\varepsilon=|\delta|/\sqrt{1-c^2}$. This verifies incompatible-drift feedback for every $\tau>0$.
+For \eqref{eq:potential} with $\alpha=1$, $\eta=1.5$, $\tau=4$, my generator discretisation on $[-14,14]$ (561 points) estimated $\theta\approx0.39$ and boundary-field sensitivity $\approx2.01$, searching $|x|\leq10$ and 16 fields. Refinement to 801 points and 24 fields was stable; the code recovered Gaussian constants at $\eta=0$. Quadrature gives a separate equilibrium criterion $\sum_j|J_{ij}|<1/\sup_f\operatorname{Var}_{\pi_f}U\approx0.393$. These are numerical estimates, not global certificates.
+On a chain with nearest-neighbour $J_{ij}=0.05$ and $\lambda_1=\lambda_2=0.005$, preliminary constants give $\normw{F}\approx0.81$, $c_1\approx21$ and score multiplier about $110$: admissibility is not yet practical tightness. We will optimise $\tau$ and envelopes, using analytic tails, validated discretisation and bounds between grid points. Field reduction must respect $(u,f)\mapsto(u+2\pi,f+2\pi\alpha)$. Reflection distances are an alternative when short-time Euclidean bounds exceed one.
+
+\textbf{2.5 Sharp truncation benchmark and computational consequence.}
+For $X_{j+1}=aX_j+\sqrt{1-a^2}\xi_{j+1}$ in stationarity, $0<a<1$, observing $X_d=\pm1$ gives $\pi_\pm=N(\pm a^d,1-a^{2d})$ at the origin. A sampler unable to read $X_d$ has the same output $\nu$ in both cases, so $\max\{\W(\nu,\pi_+),\W(\nu,\pi_-)\}\geq a^d$. For Gaussian precision $Q$ with nonpositive off-diagonals, $C=I-D_Q^{-1}Q$ and $(I-C)^{-1}=\Sigma D_Q$, where $D_Q=\operatorname{diag}(Q)$ \cite{MJW06}. On the infinite chain the weights are $(1+a^2)a^{|i-j|}/(1-a^2)$, matching the lower exponent. The row-sum estimate $q^r$, $q=2a/(1+a^2)$, requires an asymptotically larger radius by $\log(1/a)/\log(1/q)$: about $19$ at $a=0.9$. Sharpness concerns truncation, not the full learned error or runtime.
+For fixed structural margins, bounded $M_0$, fixed $\tau$ and local evaluation cost, the error floor $O(\varepsilon+\sqrt h)$ yields an online score-evaluation budget $O(|I_r(S)|\delta^{-2}\log(1/\delta))$ for accuracy $\delta$, with $h\asymp\delta^2$, sufficient score accuracy and radius chosen from the spatial bound. Constants must include correlation length, graph growth and stability margins; training and certification are excluded.
+
+\section{Candidate and planned fellowship}
+\textbf{3.1 Competence, recruitment and independence.}
+We seek a recent PhD from outside Sweden in probability, stochastic analysis, optimal transport or numerical analysis, with evidence of independent mathematical work. The position will be advertised internationally and filled in open competition. Friesen and I will lead mathematical assessment; Villanueva-Perez will assess the optional imaging connection. Katsoulakis is not on the selection committee.
+
+Dr Hyemin Gu has expressed interest. She defended her PhD with Katsoulakis at UMass Amherst in September 2025 and is now a postdoc there. Her doctoral research concerns Wasserstein-regularised generative flows. Her first-author work on Lipschitz-regularised gradient flows and generative particle algorithms \cite{GBPRK24} supports the reference-law defect analysis; her residual-architecture work \cite{GTSK26} brings experience converting growth and sensitivity bounds into stability certificates. Friesen supplies complementary coupling expertise. At Lund she would develop a distinct line in spatial perturbation theory, within the programme I formulated. The fellow will lead Theorem~B and choose an extension, with contribution-based authorship and freedom to publish independently.
+
+\textbf{3.2 Two-year programme (from 1 July 2027).}
+\textbf{Core success:} the combined A+B theorem for a certified nonconvex family with incompatible, own-coordinate-dependent residuals, explicit decay and a complete accuracy budget. The Gaussian benchmark and one controlled non-Gaussian test are essential; broader potentials and application studies are subsequent objectives.
+\textbf{Months 1--4:} establish the baseline and Gaussian checks, reproduce nonconvex estimates and begin global certification; benchmark metrics and identify the limiting constants.
+\textbf{Months 3--10:} prove spatial transfer and the finite-time recursion, including the convex-block case, for a first manuscript. During the Amherst visit compare direct learned-kernel coupling with defect feedback; select the stronger certified regime by month~8.
+\textbf{Months 8--20:} prove Theorem~B, transient moment bounds and global certification, and combine A+B for a second manuscript. Report admissible residual tolerances and deterioration near the stability boundary. Once core milestones permit, pursue broader potentials or a fellow-led extension in signed Gaussian analysis or typical-observation guarantees \cite{vdBM94}.
+\textbf{Months 18--24:} compare certified and observed errors as radius, residual size and interaction strength vary, and release reproducible code. Graph-imputation work supplies testbed design; guarantees apply to the specified block sampler, not automatically to the original diffusion architecture. Sensor or MAX IV studies are optional validation. The fellow will lead a working seminar and a two-day national workshop, and prepare a starting-grant application subject to eligibility. Articles will be openly accessible through Lund's repository under KAW requirements.
+
+\textbf{3.3 Risks and lasting value.}
+Weak contraction and excessive feedback may require improved envelopes or reflection metrics. If feedback prevents retention of the reference exponent, establish the certified slower rate and identify the mechanism. Each milestone reports both admissibility and the full error multiplier. A convex fallback must still deliver spatially weighted reference-law guarantees for incompatible finite updates and artificial boundaries; a standard perturbation bound alone is insufficient. The lasting contribution is a Lund research line connecting probability and learned stochastic dynamics, with the fellow owning a main theorem and an independent extension. We will invite Jimmy Olsson, Fredrik Lindsten and Moritz Schauer to the seminar and workshop.
+
+\begingroup
+\fontsize{9}{10.5}\selectfont
+\begin{thebibliography}{99}
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+\bibitem{KPS06} M.~A. Katsoulakis, P. Plech\'a\v{c} and A. Sopasakis. \href{https://doi.org/10.1137/050637339}{Error analysis of coarse-graining for stochastic lattice dynamics}. \emph{SIAM J. Numer. Anal.} 44, 2270--2296 (2006).
+\bibitem{Sop12} A. Sopasakis. \href{https://doi.org/10.4208/cicp.110211.200611a}{Lattice free stochastic dynamics}. \emph{Commun. Comput. Phys.} 12, 691--702 (2012).
+\bibitem{LS25} D. Liu and A. Sopasakis. \href{https://doi.org/10.1063/5.0214404}{Enhancing sparse identification of nonlinear dynamics with Earth-Mover distance and group similarity}. \emph{Chaos} 35, 033139 (2025).
+\bibitem{LAS25} D. Liu, O. \AA{}str\"om and A. Sopasakis. Graph-enhanced diffusion models for spatiotemporal imputation. Under revision, \emph{Integrated Computer-Aided Engineering}. Paper IV, D. Liu, \emph{System Identification and Data-Driven Modeling}, Lund PhD thesis (2025).
+\bibitem{ZLLKO24} B.~J. Zhang, S. Liu, W. Li, M.~A. Katsoulakis and S. Osher. \href{https://doi.org/10.1137/24M1644584}{Wasserstein proximal operators describe score-based generative models and resolve memorization}. \emph{SIAM J. Math. Data Sci.} 8, 623--648 (2026).
+\bibitem{Zhang25} Y. Zhang, Z. Yao, R. Kl\"ofkorn, T. Ritschel and P. Villanueva-Perez. \href{https://doi.org/10.1038/s44172-025-00390-w}{4D-ONIX for reconstructing 3D movies from sparse X-ray projections via deep learning}. \emph{Commun. Eng.} 4, 54 (2025).
+\bibitem{Dob70} R.~L. Dobrushin. \href{https://doi.org/10.1137/1115049}{Prescribing a system of random variables by conditional distributions}. \emph{Theory Probab. Appl.} 15, 458--486 (1970).
+\bibitem{RvH14} P. Rebeschini and R. van Handel. \href{https://doi.org/10.1007/s10955-014-1087-7}{Comparison theorems for Gibbs measures}. \emph{J. Stat. Phys.} 157, 234--281 (2014).
+\bibitem{TMM20} X.~T. Tong, M. Morzfeld and Y.~M. Marzouk. \href{https://doi.org/10.1137/19M1284014}{MALA-within-Gibbs samplers for high-dimensional distributions with sparse conditional structure}. \emph{SIAM J. Sci. Comput.} 42, A1765--A1788 (2020).
+\bibitem{RS18} D. Rudolf and N. Schweizer. \href{https://doi.org/10.3150/17-BEJ938}{Perturbation theory for Markov chains via Wasserstein distance}. \emph{Bernoulli} 24, 2610--2639 (2018).
+\bibitem{Eberle16} A. Eberle. \href{https://doi.org/10.1007/s00440-015-0673-1}{Reflection couplings and contraction rates for diffusions}. \emph{Probab. Theory Relat. Fields} 166, 851--886 (2016).
+\bibitem{MMS20} M.~B. Majka, A. Mijatovi\'c and \L. Szpruch. \href{https://doi.org/10.1214/19-AAP1535}{Nonasymptotic bounds for sampling algorithms without log-concavity}. \emph{Ann. Appl. Probab.} 30, 1534--1581 (2020).
+\bibitem{LGHSK14} J. Liu, A. Gelman, J. Hill, Y.-S. Su and J. Kropko. \href{https://doi.org/10.1093/biomet/ast044}{On the stationary distribution of iterative imputations}. \emph{Biometrika} 101, 155--173 (2014).
+\bibitem{CLT} T. Cui, S. Liu and X.~T. Tong. Stein's method for marginals on large graphical models. \href{https://arxiv.org/abs/2410.11771}{arXiv:2410.11771}, revised 2026.
+\bibitem{GR26} G.~A. Gottwald and S. Reich. \href{https://doi.org/10.1016/j.jcp.2025.114583}{Localized Schr\"odinger bridge sampler}. \emph{J. Comput. Phys.} 548, 114583 (2026).
+\bibitem{GLMRT} G.~A. Gottwald, S. Liu, Y. Marzouk, S. Reich and X.~T. Tong. Localized diffusion models. \href{https://arxiv.org/abs/2505.04417}{arXiv:2505.04417}, revised 2026.
+\bibitem{Xi26} W. Xi. When do local score models extrapolate across size? A diagnostic theory and benchmark. \href{https://arxiv.org/abs/2606.09705}{arXiv:2606.09705} (2026).
+\bibitem{CCSW26} D.~Y. Cao, A.~Y. Chen, K. Sridharan and Y. Wu. On the robustness of Langevin dynamics to score function error. ICML 2026. \href{https://arxiv.org/abs/2603.11319}{arXiv:2603.11319}.
+\bibitem{MJW06} D.~M. Malioutov, J.~K. Johnson and A.~S. Willsky. Walk-sums and belief propagation in Gaussian graphical models. \emph{J. Mach. Learn. Res.} 7, 2031--2064 (2006).
+\bibitem{GBPRK24} H. Gu, P. Birmpa, Y. Pantazis, L. Rey-Bellet and M.~A. Katsoulakis. \href{https://doi.org/10.1137/23M1587841}{Lipschitz-regularized gradient flows and generative particle algorithms for high-dimensional scarce data}. \emph{SIAM J. Math. Data Sci.} 6, 1205--1235 (2024).
+\bibitem{GTSK26} H. Gu, M. Tyrrell, T. Sahai and M.~A. Katsoulakis. Certifying residual architectures from their primitives: a sharp stability threshold. \href{https://arxiv.org/abs/2607.14576}{arXiv:2607.14576v2} (2026).
+\bibitem{vdBM94} J. van den Berg and C. Maes. \href{https://doi.org/10.1214/aop/1176988728}{Disagreement percolation in the study of Markov fields}. \emph{Ann. Probab.} 22, 749--763 (1994).
+\end{thebibliography}
+\endgroup
+\end{document}

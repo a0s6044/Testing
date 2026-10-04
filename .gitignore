@@ -9,3 +9,4 @@ build/drafts/
 *.out
 *.log
 build/*.tex
+build/v2/
